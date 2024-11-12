@@ -1,0 +1,21 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  image       String
+  price       Float
+  quantity    Int
+  description String
+  personalColorCategory String // 수정된 필드
+}
+
+

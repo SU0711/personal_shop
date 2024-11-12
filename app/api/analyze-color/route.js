@@ -2,25 +2,17 @@ import { PrismaClient } from '@prisma/client';
 import formidable from 'formidable';
 import sharp from 'sharp';
 import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-// 런타임을 Node.js로 설정
+// Node.js 런타임 설정
 export const runtime = 'nodejs';
-
-// Next.js에서 bodyParser를 비활성화하는 방법
-export const config = {
-  api: {
-    bodyParser: false,  // formidable을 사용하기 위해 bodyParser 비활성화
-  },
-};
 
 export async function POST(request) {
   const form = formidable({ multiples: false, uploadDir: './uploads', keepExtensions: true });
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     form.parse(request, async (err, fields, files) => {
       if (err) {
         console.error('파일 업로드 실패:', err);
@@ -45,7 +37,7 @@ export async function POST(request) {
         // 상품 추천 로직
         const recommendedProducts = await prisma.product.findMany({
           where: {
-            color: hexColor,  // 상품 색상과 매칭
+            color: hexColor, // 상품 색상과 매칭
           },
         });
 
